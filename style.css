@@ -348,6 +348,20 @@ h3,
   margin: 22px 0 0;
   color: #765c3c;
 }
+body.night-mode .hero-copy,
+body.dark-mode .hero-copy {
+  color: #d8e8f7;
+}
+body.night-mode .hero-meta span,
+body.dark-mode .hero-meta span {
+  color: #e4f0fb;
+  background: rgba(7, 17, 31, 0.38);
+  border-color: rgba(210, 232, 255, 0.28);
+}
+body.night-mode .hero .eyebrow,
+body.dark-mode .hero .eyebrow {
+  color: #ffd27c;
+}
 .sun-orb {
   position: absolute;
   inset: 4% 0 0;
