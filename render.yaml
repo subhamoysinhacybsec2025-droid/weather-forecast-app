@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: skycast-weather
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn --bind 0.0.0.0:$PORT app:app
+    envVars:
+      - key: OPENWEATHER_API_KEY
+        sync: false
+      - key: FLASK_DEBUG
+        value: "false"
