@@ -152,6 +152,8 @@ def get_weather(city):
     except requests.HTTPError as error:
         if error.response is not None and error.response.status_code in (401, 403):
             alerts_available = False
+    except (requests.RequestException, KeyError, IndexError, TypeError, ValueError):
+        alerts_available = False
 
     return {
         "location": ", ".join(filter(None, [location.get("name"), location.get("state"), location.get("country")])),
@@ -233,6 +235,8 @@ def weather_api():
             return jsonify({"error": "Could not connect to OpenWeather. Check your internet connection and try again."}), 502
         except requests.RequestException:
             return jsonify({"error": "Weather service is temporarily unavailable. Please try again."}), 502
+        except RuntimeError as error:
+            return jsonify({"error": str(error)}), 500
 
     city = request.args.get("city", "London").strip()
     if not city:
