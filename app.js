@@ -219,6 +219,13 @@ async function loadWeather(city = $("city-input").value) {
     return;
   }
 
+  if (window.location.hostname.endsWith("github.io")) {
+    showError(
+      "GitHub Pages can preview the interface, but it cannot run the Flask weather API. Deploy this project on Render and set OPENWEATHER_API_KEY to enable live weather data.",
+    );
+    return;
+  }
+
   if (activeRequest) activeRequest.abort();
   activeRequest = new AbortController();
   $("loading").classList.remove("d-none");
@@ -229,6 +236,12 @@ async function loadWeather(city = $("city-input").value) {
       `/api/weather?city=${encodeURIComponent(normalizedCity)}`,
       { signal: activeRequest.signal },
     );
+    const contentType = response.headers.get("content-type") || "";
+    if (!contentType.includes("application/json")) {
+      throw new Error(
+        "The weather backend returned an invalid response. Deploy the Flask app on Render and configure OPENWEATHER_API_KEY.",
+      );
+    }
     const data = await response.json();
 
     if (!response.ok) throw new Error(data.error || "Unable to load weather.");
